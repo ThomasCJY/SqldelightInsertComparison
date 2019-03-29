@@ -1,0 +1,17 @@
+CREATE TABLE team (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  coach TEXT NOT NULL,
+  captain INTEGER,
+  won_cup INTEGER AS Boolean NOT NULL DEFAULT 0
+);
+
+select_changes:
+SELECT changes();
+
+select_lastInsertRow:
+SELECT last_insert_rowid();
+
+insertTeam:
+INSERT INTO team(name, coach, won_cup)
+VALUES (?, ?, ?);
