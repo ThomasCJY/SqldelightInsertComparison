@@ -7,21 +7,26 @@ import com.example.MyDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 
 class MainActivity : AppCompatActivity() {
+    lateinit var database: MyDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val driver = AndroidSqliteDriver(MyDatabase.Schema, applicationContext, "test.db")
-        val database = MyDatabase(driver)
+        database = MyDatabase(driver)
 
         val shouldBeZero = database.hockeyPlayerQueries.select_changes().executeAsOne()
 
-        database.hockeyPlayerQueries.insertTeam("name1", "coach1", false)
+        insertItem()
 
         val shouldBeOne = database.hockeyPlayerQueries.select_changes().executeAsOne()
 
         Log.d("ThomasTest", "shouldBeZero: $shouldBeZero; shouldBeOne: $shouldBeOne")
 
         setContentView(R.layout.activity_main)
+    }
+
+    fun insertItem() {
+        database.hockeyPlayerQueries.insertTeam("name1", "coach1", false)
     }
 }
