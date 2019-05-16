@@ -28,6 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     fun insertItem() {
         database.hockeyPlayerQueries.insertTeam("name1", "coach1", false)
-        database.hockeyPlayerQueries.select_lastInsertRow()
+        database.hockeyPlayerQueries.select_lastInsertRow().executeAsOne()
     }
 }
