@@ -3,17 +3,33 @@ package com.example.sqldelighttest
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.MyDatabase
+import androidx.sqlite.db.SupportSQLiteOpenHelper
+import androidx.sqlite.db.SupportSQLiteStatement
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 
 class MainActivity : AppCompatActivity() {
-    lateinit var database: MyDatabase
+    lateinit var database: BenchmarkDatabase
+    lateinit var compiledStatement: SupportSQLiteStatement
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val driver = AndroidSqliteDriver(MyDatabase.Schema, applicationContext, "test.db")
-        database = MyDatabase(driver)
+        val config = SupportSQLiteOpenHelper.Configuration.builder(applicationContext)
+                .callback(AndroidSqliteDriver.Callback(BenchmarkDatabase.Schema))
+                .name("test.db")
+                .build()
+        val helper = FrameworkSQLiteOpenHelperFactory().create(config)
+        helper.setWriteAheadLoggingEnabled(true)
+
+        val driver = BenchmarkSqliteDriver(helper)
+
+        database = BenchmarkDatabase(driver)
+
+        compiledStatement = helper.writableDatabase.compileStatement("""
+        INSERT INTO team(name, coach, won_cup)
+        VALUES (?1, ?2, ?3)
+        """)
 
         val shouldBeZero = database.hockeyPlayerQueries.select_changes().executeAsOne()
 
@@ -27,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun insertItem() {
-        database.hockeyPlayerQueries.insertTeam("name1", "coach1", false)
+        database.hockeyPlayerQueries.insertTeam(compiledStatement,"name1", "coach1", false)
         database.hockeyPlayerQueries.select_lastInsertRow().executeAsOne()
     }
 }
