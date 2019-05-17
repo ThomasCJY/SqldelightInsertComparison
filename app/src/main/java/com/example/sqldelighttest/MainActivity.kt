@@ -3,6 +3,8 @@ package com.example.sqldelighttest
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.sqlite.db.SupportSQLiteOpenHelper
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import com.example.MyDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 
@@ -12,7 +14,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val driver = AndroidSqliteDriver(MyDatabase.Schema, applicationContext, "test.db")
+        val config = SupportSQLiteOpenHelper.Configuration.builder(applicationContext)
+                .callback(AndroidSqliteDriver.Callback(MyDatabase.Schema))
+                .name("test.db")
+                .build()
+        val helper = FrameworkSQLiteOpenHelperFactory().create(config)
+        helper.setWriteAheadLoggingEnabled(true)
+        val driver = AndroidSqliteDriver(helper)
         database = MyDatabase(driver)
 
         val shouldBeZero = database.hockeyPlayerQueries.select_changes().executeAsOne()
