@@ -2,6 +2,7 @@ package com.example.sqldelighttest
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Trace
 import android.util.Log
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import androidx.sqlite.db.SupportSQLiteStatement
@@ -10,7 +11,6 @@ import com.squareup.sqldelight.android.AndroidSqliteDriver
 
 class MainActivity : AppCompatActivity() {
     lateinit var database: BenchmarkDatabase
-    lateinit var compiledStatement: SupportSQLiteStatement
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,16 +26,13 @@ class MainActivity : AppCompatActivity() {
 
         database = BenchmarkDatabase(driver)
 
-        compiledStatement = helper.writableDatabase.compileStatement("""
-        INSERT INTO team(name, coach, won_cup)
-        VALUES (?1, ?2, ?3)
-        """)
-
         val shouldBeZero = database.hockeyPlayerQueries.select_changes().executeAsOne()
 
         val start = System.currentTimeMillis()
-        for (i in 1..1000) {
+        for (i in 1..10) {
+            Trace.beginSection("insertItem")
             insertItem()
+            Trace.endSection()
         }
         Log.d("ThomasTest", "time: ${System.currentTimeMillis() - start}")
 
@@ -47,6 +44,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun insertItem() {
-        database.hockeyPlayerQueries.insertTeam(compiledStatement,"name1", "coach1", false)
+        database.hockeyPlayerQueries.insertTeam("name1", "coach1", false)
     }
 }

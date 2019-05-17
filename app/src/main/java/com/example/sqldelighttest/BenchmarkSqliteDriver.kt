@@ -2,6 +2,7 @@ package com.example.sqldelighttest
 
 import android.content.Context
 import android.database.Cursor
+import android.os.Trace
 import android.util.LruCache
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
@@ -102,6 +103,7 @@ class BenchmarkSqliteDriver private constructor(
             binders: (SqlPreparedStatement.() -> Unit)?,
             result: AndroidStatement.() -> T
     ): T {
+        Trace.beginSection("execute")
         var statement: AndroidStatement? = null
         if (identifier != null){
             statement = statements.remove(identifier)
@@ -114,6 +116,7 @@ class BenchmarkSqliteDriver private constructor(
             return statement.result()
         } finally {
             if (identifier != null) statements.put(identifier, statement)?.close()
+            Trace.endSection()
         }
     }
 

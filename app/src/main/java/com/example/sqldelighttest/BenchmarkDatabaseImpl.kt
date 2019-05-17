@@ -65,12 +65,14 @@ SqlDriver) : TransacterImpl(driver), BenchmarkHockeyPlayerQueries {
     }
 
     override fun insertTeam(
-            compiledStatement: SupportSQLiteStatement,
             name: String,
             coach: String,
             won_cup: Boolean
     ) {
-        (driver as BenchmarkSqliteDriver).executeWithCompileStatement(5, compiledStatement , 3) {
+        driver.execute(2, """
+        |INSERT INTO team(name, coach, won_cup)
+        |VALUES (?1, ?2, ?3)
+        """.trimMargin(), 3) {
             bindString(1, name)
             bindString(2, coach)
             bindLong(3, if (won_cup) 1L else 0L)

@@ -13,7 +13,6 @@ interface BenchmarkHockeyPlayerQueries: Transacter {
     fun select_lastInsertRow(): Query<Long>
 
     fun insertTeam(
-            compiledStatement: SupportSQLiteStatement,
             name: String,
             coach: String,
             won_cup: Boolean
