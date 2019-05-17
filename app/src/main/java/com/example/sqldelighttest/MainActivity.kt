@@ -2,6 +2,7 @@ package com.example.sqldelighttest
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
@@ -25,7 +26,11 @@ class MainActivity : AppCompatActivity() {
         database = helper.writableDatabase
         insertTeam = HockeyPlayerModel.InsertTeam(database)
 
-        insertItem()
+        val start = System.currentTimeMillis()
+        for (i in 1..1000) {
+            insertItem()
+        }
+        Log.d("ThomasTest", "time: ${System.currentTimeMillis() - start}")
 
         setContentView(R.layout.activity_main)
     }
