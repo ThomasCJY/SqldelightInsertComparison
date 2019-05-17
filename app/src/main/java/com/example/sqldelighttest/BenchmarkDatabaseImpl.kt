@@ -70,9 +70,9 @@ SqlDriver) : TransacterImpl(driver), BenchmarkHockeyPlayerQueries {
             won_cup: Boolean
     ) {
         driver.execute(2, """
-        |INSERT INTO team(name, coach, won_cup)
-        |VALUES (?1, ?2, ?3)
-        """.trimMargin(), 3) {
+        INSERT INTO team(name, coach, won_cup)
+        VALUES (?1, ?2, ?3)
+        """, 3) {
             bindString(1, name)
             bindString(2, coach)
             bindLong(3, if (won_cup) 1L else 0L)
