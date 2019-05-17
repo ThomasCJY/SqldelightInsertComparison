@@ -33,7 +33,11 @@ class MainActivity : AppCompatActivity() {
 
         val shouldBeZero = database.hockeyPlayerQueries.select_changes().executeAsOne()
 
-        insertItem()
+        val start = System.currentTimeMillis()
+        for (i in 1..1000) {
+            insertItem()
+        }
+        Log.d("ThomasTest", "time: ${System.currentTimeMillis() - start}")
 
         val shouldBeOne = database.hockeyPlayerQueries.select_changes().executeAsOne()
 
@@ -44,6 +48,5 @@ class MainActivity : AppCompatActivity() {
 
     fun insertItem() {
         database.hockeyPlayerQueries.insertTeam(compiledStatement,"name1", "coach1", false)
-        database.hockeyPlayerQueries.select_lastInsertRow().executeAsOne()
     }
 }
