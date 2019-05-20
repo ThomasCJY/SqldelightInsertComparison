@@ -26,19 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         database = BenchmarkDatabase(driver)
 
-        val shouldBeZero = database.hockeyPlayerQueries.select_changes().executeAsOne()
-
-        val start = System.currentTimeMillis()
-        for (i in 1..10) {
-            Trace.beginSection("insertItem")
-            insertItem()
-            Trace.endSection()
-        }
-        Log.d("ThomasTest", "time: ${System.currentTimeMillis() - start}")
-
-        val shouldBeOne = database.hockeyPlayerQueries.select_changes().executeAsOne()
-
-        Log.d("ThomasTest", "shouldBeZero: $shouldBeZero; shouldBeOne: $shouldBeOne")
+        insertItem()
 
         setContentView(R.layout.activity_main)
     }
