@@ -26,20 +26,13 @@ class MainActivity : AppCompatActivity() {
         database = helper.writableDatabase
         insertTeam = HockeyPlayerModel.InsertTeam(database)
 
-        val start = System.currentTimeMillis()
-        for (i in 1..1000) {
-            insertItem()
-        }
-        Log.d("ThomasTest", "time: ${System.currentTimeMillis() - start}")
+        insertItem()
 
         setContentView(R.layout.activity_main)
     }
 
     fun insertItem() {
         insertTeam.bind("name1", "coach1", false)
-        val a = insertTeam.executeInsert()
-        if (a <= 0) {
-            throw RuntimeException("error")
-        }
+        insertTeam.executeInsert()
     }
 }
