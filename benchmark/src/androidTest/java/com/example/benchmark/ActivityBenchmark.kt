@@ -61,7 +61,7 @@ class ActivityBenchmark {
      * Measure the cost of scrolling RecyclerView by one ViewHolder.
      */
     @Test
-    fun testInsert() {
+    fun testQuery() {
         activityScenario.onActivity {
             benchmarkRule.measureRepeated {
                 // Scroll RecyclerView by one item
