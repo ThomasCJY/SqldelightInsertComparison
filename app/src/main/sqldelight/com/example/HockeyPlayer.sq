@@ -15,3 +15,10 @@ SELECT last_insert_rowid();
 insertTeam:
 INSERT INTO team(name, coach, won_cup)
 VALUES (?, ?, ?);
+
+query1: SELECT * FROM team;
+query2: SELECT * FROM team;
+query3: SELECT * FROM team;
+query4: SELECT * FROM team;
+query5: SELECT * FROM team;
+query6: SELECT * FROM team;

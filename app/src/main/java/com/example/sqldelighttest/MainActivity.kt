@@ -28,11 +28,27 @@ class MainActivity : AppCompatActivity() {
 
         insertItem()
 
+        val result = allPlayers()
+        Log.d("ThomasTest", "result: $result")
+
         setContentView(R.layout.activity_main)
     }
 
-    fun insertItem() {
+    private fun insertItem() {
         insertTeam.bind("name1", "coach1", false)
         insertTeam.executeInsert()
+        insertTeam.bind("name2", "coach2", false)
+        insertTeam.executeInsert()
+    }
+
+    fun allPlayers(): List<HockeyPlayer> {
+        val result = mutableListOf<HockeyPlayer>()
+        val query = HockeyPlayer.FACTORY.query1()
+        database.query(query).use { cursor ->
+            while (cursor.moveToNext()) {
+                result.add(HockeyPlayer.QUERY1_MAPPER.map(cursor))
+            }
+        }
+        return result
     }
 }
