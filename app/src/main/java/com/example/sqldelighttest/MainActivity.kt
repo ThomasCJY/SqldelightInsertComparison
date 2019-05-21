@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import com.example.MyDatabase
+import com.example.Team
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 
 class MainActivity : AppCompatActivity() {
@@ -23,23 +24,20 @@ class MainActivity : AppCompatActivity() {
         val driver = AndroidSqliteDriver(helper)
         database = MyDatabase(driver)
 
-        val shouldBeZero = database.hockeyPlayerQueries.select_changes().executeAsOne()
+        insertItem()
 
-        val start = System.currentTimeMillis()
-        for (i in 1..1000) {
-            insertItem()
-        }
-        Log.d("ThomasTest", "time: ${System.currentTimeMillis() - start}")
-
-        val shouldBeOne = database.hockeyPlayerQueries.select_changes().executeAsOne()
-
-        Log.d("ThomasTest", "shouldBeZero: $shouldBeZero; shouldBeOne: $shouldBeOne")
+        val result = selectAll()
 
         setContentView(R.layout.activity_main)
     }
 
-    fun insertItem() {
+    private fun insertItem() {
         database.hockeyPlayerQueries.insertTeam("name1", "coach1", false)
+        database.hockeyPlayerQueries.insertTeam("name2", "coach2", false)
         database.hockeyPlayerQueries.select_lastInsertRow().executeAsOne()
+    }
+
+    fun selectAll(): List<Team> {
+        return database.hockeyPlayerQueries.query1().executeAsList()
     }
 }
