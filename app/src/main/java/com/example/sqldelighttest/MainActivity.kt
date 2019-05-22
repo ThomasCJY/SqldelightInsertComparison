@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
         insertTeam.bind("name1", "coach1", false)
         statement = AndroidxToSupportSqliteStatement(insertTeam)
 
-        insertItem()
-
         queryAndMapToList(HockeyPlayer.FACTORY.query1(), HockeyPlayer.QUERY1_MAPPER::map).subscribe()
         queryAndMapToList(HockeyPlayer.FACTORY.query2(), HockeyPlayer.QUERY1_MAPPER::map).subscribe()
         queryAndMapToList(HockeyPlayer.FACTORY.query3(), HockeyPlayer.QUERY1_MAPPER::map).subscribe()
