@@ -66,7 +66,7 @@ class ActivityBenchmark {
             benchmarkRule.measureRepeated {
                 // Scroll RecyclerView by one item
                 // this will synchronously execute: attach / detach(old item) / bind / layout
-                it.selectAll()
+                it.insertItem()
             }
         }
     }
